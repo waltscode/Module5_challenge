@@ -73,3 +73,9 @@ textarea {
   background-color: #77dd77;
   color: white;
 }
+/* add a little styling to the date and draw the user's attention to it  */
+#currentDay {
+  color: crimson;
+  font-size: xx-large;
+  font-weight: 600;
+}

@@ -2,6 +2,7 @@
 // the code isn't run until the browser has finished rendering all the elements
 // in the html.
 
+      // declaring the time variable - dayjs() is being used to take the info from the API src=cdn.jsdelivr.net/npm/dayjs@1.11.3/dayjs.m`
 const dayJsObject = dayjs();
 
 console.log(dayJsObject.format('D/M/YYYY h:mm A'));
@@ -30,17 +31,22 @@ $(function () {
 });
 
 
+// Give FUNCTION to the SAVE BUTTON - CLICKING SAVE will take THE BLOCK and the INFO that was entered 
+// SAVING it on the specific block will ensure that the info will repopulate int he correct space
+
 $(".saveBtn").on("click",function () {
   var blockId = $(this).parent().attr('id');
   var userInput = $(this).siblings(".description").val();
-
+// console logging to test what happens - checking if it works 
 console.log("Block ID:", blockId)
 console.log("User Input:", userInput)
 
   localStorage.setItem(blockId, userInput);
 });
 
-
+// ABOVE ^ ONLY saves the info into the storage - it does not make it show up when the page is refreshed 
+// this function is being used to PULL THAT INFO THATS STORED and show it
+// also the IF statement is used so if there is NOTHING THERE it will remain empty
 function populateLocalStorage() {
   $(".time-block textarea").each(function () {
     var blockId = $(this).parent().attr("id");
@@ -52,11 +58,17 @@ function populateLocalStorage() {
   });
 }
 
+// without telling the computer to RUN the function- the info doesn't get recalled
 populateLocalStorage();
 
+
+// jQuery function to take the ID 'current day' and make the text reflect the info being converted from the API - so its not just 0213165441869541305641
+// ID 'currentday' is in the Header
 $("#currentDay").text(dayJsObject.format('dddd, MMMM D, YYYY h:mm A'));
 
-// Function to update the time-block classes based on the current hour
+
+
+// Function to update the time-block classes based on the current hour - the hour assigned in the ID is exemplified by 'hour-___' - it then gets matched up to dayJsObject
 function updateTimeBlocks() {
   console.log();
   $(".time-block").each(function () {
@@ -74,7 +86,7 @@ function updateTimeBlocks() {
   });
 }
 
-// Call the function to initially set the time-block classes
+// Call the function to initially set the time-block classes/colors
 updateTimeBlocks();
 
 // Add an interval to update the classes every hour
