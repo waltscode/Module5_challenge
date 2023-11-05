@@ -1,9 +1,9 @@
-// Wrap all code that interacts with the DOM in a call to jQuery to ensure that
-// the code isn't run until the browser has finished rendering all the elements
-// in the html.
-
-      // declaring the time variable - dayjs() is being used to take the info from the API src=cdn.jsdelivr.net/npm/dayjs@1.11.3/dayjs.m`
+// declaring the time variable - dayjs() is being used to take the info from the API src=cdn.jsdelivr.net/npm/dayjs@1.11.3/dayjs.m`
+// we want the CONST(ant) variable to be the time in dayjs()
+// we want the CURRENTHOUR variable to have the ability to change making it a LET variable
+// CONST variable is being checked against ever-changing LET variable
 const dayJsObject = dayjs();
+let currentHour = dayJsObject.hour();
 
 console.log(dayJsObject.format('D/M/YYYY h:mm A'));
 
@@ -34,12 +34,12 @@ $(function () {
 // Give FUNCTION to the SAVE BUTTON - CLICKING SAVE will take THE BLOCK and the INFO that was entered 
 // SAVING it on the specific block will ensure that the info will repopulate int he correct space
 
-$(".saveBtn").on("click",function () {
+$(".saveBtn").on("click", function () {
   var blockId = $(this).parent().attr('id');
   var userInput = $(this).siblings(".description").val();
-// console logging to test what happens - checking if it works 
-console.log("Block ID:", blockId)
-console.log("User Input:", userInput)
+  // console logging to test what happens - checking if it works 
+  console.log("Block ID:", blockId)
+  console.log("User Input:", userInput)
 
   localStorage.setItem(blockId, userInput);
 });
@@ -75,8 +75,10 @@ function updateTimeBlocks() {
     // Get the hour from the time-block's id
     var blockHour = parseInt($(this).attr("id").split("-")[1]);
 
-    // Compare the block's hour with the current hour and add the appropriate class
+    // Compare the block's hour with the current hour and add the appropriate class - we want to REMOVE the current class on the block and then APPLY the proper one i.e correct COLOR
     if (blockHour < dayJsObject.hour()) {
+      // if the block has PRESENT or FUTURE class - REMOVE IT and then ADD Past
+      // else statements will continue in same format
       $(this).removeClass("present future").addClass("past");
     } else if (blockHour === currentHour) {
       $(this).removeClass("past future").addClass("present");
@@ -86,13 +88,20 @@ function updateTimeBlocks() {
   });
 }
 
-// Call the function to initially set the time-block classes/colors
+// when the page Initializes APPLY THE CORRECT time-block classes/colors
 updateTimeBlocks();
 
-// Add an interval to update the classes every hour
+// Add an interval to update the classes every hour - page needs to update according to what hour is present
+// Checks if the current hour obtained from dayJsObject is not equal to the stored value in the currentHour variable.
+// If the current hour has changed, it updates the currentHour variable with the new hour from dayJsObject: currentHour = dayJsObject.hour();.
+// then run updateTimeBlocks accordingly
 setInterval(function () {
   if (dayJsObject.hour() !== currentHour) {
     currentHour = dayJsObject.hour();
     updateTimeBlocks();
   }
-}, 60 * 60 * 1000); // Update only when the hour changes
+}, 10 * 60 * 1000);
+// Update only when the hour changes -
+// 60 seconds in a minute: 60 * 1000 milliseconds
+// 60 minutes in an hour: 60 * (60 * 1000) milliseconds
+// SINCE WE WANT IT TO CHECK every 10 mins we change it to 10 * 60 * 1000
