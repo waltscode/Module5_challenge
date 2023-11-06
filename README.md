@@ -37,4 +37,4 @@ https://waltscode.github.io/Module5_challenge/
 
 # Screenshot of the website can be found below:
 
-![Alt text](image.png)
+![ ](image-1.png)
